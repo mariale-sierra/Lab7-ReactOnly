@@ -9,6 +9,15 @@
     grid-template-columns: repeat(20, 20px);
     gap: 2px;
     justify-content: center;
+    position: relative; 
+    }
+
+    .food-img {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    grid-column: var(--x);
+    grid-row: var(--y);
     }
 
     .cell1 {
@@ -63,21 +72,38 @@
 
     for (let y = 0; y < size; y++) {
         for (let x = 0; x < size; x++) {
+
         let className = (x + y) % 2 === 0 ? "cell1" : "cell2";
 
         if (snake.some(seg => seg[0] === x && seg[1] === y)) {
             className += " snake";
         }
 
-        if (food[0] === x && food[1] === y) {
-            className += " food";
-        }
-
         cells.push(<div key={`${x}-${y}`} className={className}></div>);
         }
     }
 
-    return <div className="board">{cells}</div>;
+    return (
+        <div className="board">
+        {cells}
+        <Food position={food} />
+        </div>
+    );
+    }
+
+    function Food({ position }) {
+    const style = {
+        gridColumnStart: position[0] + 1,
+        gridRowStart: position[1] + 1,
+    };
+
+    return (
+        <img 
+        src="apple.png" 
+        style={style} 
+        className="food-img"
+        />
+    );
     }
 
     function Score({ score }) {
