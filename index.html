@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Snake con React</title>
+  <style>
+    .board {
+    display: grid;
+    grid-template-columns: repeat(20, 20px);
+    gap: 2px;
+    justify-content: center;
+    }
+
+    .cell1 {
+    width: 20px;
+    height: 20px;
+    background: #d5ffb0;
+    }
+
+    .cell2 {
+    width: 20px;
+    height: 20px;
+    background: #afd191;
+    }
+
+    .snake {
+    background: rgb(0, 111, 0);
+    }
+
+    .food {
+    background: red;
+    }
+    </style>
+</head>
+<body>
+
+  <div id="root"></div>
+  <!-- React -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <!-- Babel -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    function Game() {
+    const [snake, setSnake] = React.useState([[5, 5]]);
+    const [food, setFood] = React.useState([10, 10]);
+    const [score, setScore] = React.useState(0);
+
+    return (
+        <div>
+        <h1>Snake </h1>
+        <Score score={score} />
+        <Board snake={snake} food={food} />
+        </div>
+    );
+    }
+
+    function Board({ snake, food }) {
+    const size = 20;
+    const cells = [];
+
+    for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+        let className = (x + y) % 2 === 0 ? "cell1" : "cell2";
+
+        if (snake.some(seg => seg[0] === x && seg[1] === y)) {
+            className += " snake";
+        }
+
+        if (food[0] === x && food[1] === y) {
+            className += " food";
+        }
+
+        cells.push(<div key={`${x}-${y}`} className={className}></div>);
+        }
+    }
+
+    return <div className="board">{cells}</div>;
+    }
+
+    function Score({ score }) {
+    return <h2>Puntaje: {score}</h2>;
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<Game />);
+
+    </script>
+
+</body>
+</html>
